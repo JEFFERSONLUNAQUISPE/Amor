@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Guadalupe 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --galaxy-dark: #04020f;
+  --galaxy-mid: #0d0820;
+  --nebula-pink: #8b2fc9;
+  --nebula-blue: #1a237e;
+  --nebula-rose: #880e4f;
+  --star-white: #ffffff;
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --text-main: #f5e6ff;
+  --text-soft: #c9b8e8;
+  --card-bg: rgba(255,255,255,0.04);
+  --card-border: rgba(200,160,255,0.18);
+  --pink-accent: #f48fb1;
+  --pink-bright: #e91e8c;
+}
+
+html, body {
+  min-height: 100%;
+  font-family: 'Jost', sans-serif;
+  background: var(--galaxy-dark);
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+/* ─── GALAXY CANVAS ─── */
+#galaxy-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ─── PAGES ─── */
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+#surprise-page { display: none; flex-direction: column; min-height: auto; padding: 3rem 1rem 4rem; }
+
+/* ─── LOGIN CARD ─── */
+.login-card {
+  background: rgba(8, 4, 30, 0.75);
+  border: 1px solid var(--card-border);
+  border-radius: 28px;
+  padding: 3rem 2.5rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 60px rgba(139,47,201,0.25), 0 0 120px rgba(136,14,79,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
+  animation: cardIn 0.8s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes cardIn {
+  from { opacity:0; transform: translateY(30px) scale(0.96); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+
+.login-emblem {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #f48fb1, #c2185b 55%, #7b1fa2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 0 32px rgba(244,143,177,0.45);
+  animation: pulse 3s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 32px rgba(244,143,177,0.45); }
+  50%      { box-shadow: 0 0 48px rgba(244,143,177,0.75); }
+}
+
+.login-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.3rem;
+}
+.login-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.field-wrap { text-align: left; margin-bottom: 1.2rem; }
+.field-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 0.45rem;
+}
+.field-input {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(200,160,255,0.22);
+  border-radius: 12px;
+  font-size: 0.98rem;
+  font-family: 'Jost', sans-serif;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+  letter-spacing: 0.05em;
+}
+.field-input::placeholder { color: rgba(200,180,240,0.35); }
+.field-input:focus {
+  border-color: rgba(244,143,177,0.6);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 0 3px rgba(244,143,177,0.12);
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #c2185b 0%, #8b2fc9 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(194,24,91,0.35);
+  position: relative; overflow: hidden;
+}
+.login-btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  border-radius: 14px;
+}
+.login-btn:hover { opacity: 0.9; box-shadow: 0 6px 32px rgba(194,24,91,0.5); }
+.login-btn:active { transform: scale(0.98); }
+
+.error-msg {
+  min-height: 1.3rem;
+  margin-top: 0.9rem;
+  font-size: 0.83rem;
+  color: #f48fb1;
+  font-style: italic;
+  letter-spacing: 0.03em;
+}
+
+/* divider */
+.divider {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin: 1.6rem 0;
+  color: rgba(200,180,240,0.3);
+  font-size: 0.75rem; letter-spacing: 0.08em;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: rgba(200,160,255,0.18);
+}
+
+/* ─── SURPRISE PAGE ─── */
+.surprise-header {
+  text-align: center;
+  padding: 1rem 0 0.5rem;
+  animation: fadeUp 0.9s ease both;
+}
+.surprise-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+.surprise-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+.surprise-sub {
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(24px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ─── FLOWERS GRID ─── */
+.flowers-grid {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2.5rem auto;
+  max-width: 860px;
+  width: 100%;
+}
+
+.flower-card {
+  background: rgba(8, 4, 30, 0.65);
+  border: 1px solid var(--card-border);
+  border-radius: 22px;
+  padding: 1.8rem 1.2rem 1.4rem;
+  flex: 1; min-width: 190px; max-width: 240px;
+  text-align: center;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 40px rgba(139,47,201,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+  animation: fadeUp 0.9s ease both;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.flower-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 60px rgba(244,143,177,0.22), 0 0 120px rgba(139,47,201,0.15);
+}
+.flower-card:nth-child(2) { animation-delay: 0.15s; }
+.flower-card:nth-child(3) { animation-delay: 0.3s; }
+
+.flower-stage {
+  width: 100%;
+  height: 160px;
+  display: block;
+  overflow: visible;
+}
+
+.flower-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-top: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+.flower-meaning {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ─── LETTER ─── */
+.letter-wrap {
+  max-width: 640px;
+  margin: 0.5rem auto 0;
+  width: 100%;
+  animation: fadeUp 1s 0.35s ease both;
+}
+.letter-card {
+  background: rgba(8, 4, 30, 0.70);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 2.8rem 2.5rem;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 60px rgba(139,47,201,0.18), inset 0 1px 0 rgba(255,255,255,0.07);
+  position: relative;
+}
+.letter-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(244,143,177,0.5), transparent);
+  border-radius: 24px 24px 0 0;
+}
+
+.letter-top-deco {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 1.8rem;
+}
+.letter-top-deco-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,255,0.3));
+}
+.letter-top-deco-line.right {
+  background: linear-gradient(90deg, rgba(200,160,255,0.3), transparent);
+}
+.letter-deco-icon {
+  color: var(--gold);
+  font-size: 1.1rem;
+}
+
+.letter-greeting {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--pink-accent);
+  margin-bottom: 1.4rem;
+}
+.letter-body {
+  font-size: 0.97rem;
+  color: var(--text-soft);
+  line-height: 2;
+  font-weight: 300;
+}
+.letter-body p { margin-bottom: 1.1rem; }
+.letter-body strong { color: var(--text-main); font-weight: 500; }
+
+.letter-signature {
+  margin-top: 1.8rem;
+  text-align: right;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--gold-light);
+}
+
+/* ─── PHOTO SECTION ─── */
+.photo-wrap {
+  max-width: 640px;
+  margin: 2rem auto 0;
+  width: 100%;
+  animation: fadeUp 0.9s 0.1s ease both;
+}
+.photo-card {
+  background: rgba(8, 4, 30, 0.70);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 1.6rem;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 60px rgba(139,47,201,0.18), inset 0 1px 0 rgba(255,255,255,0.07);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.photo-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(244,143,177,0.5), transparent);
+}
+.photo-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.1rem;
+  display: flex; align-items: center; gap: 0.6rem; justify-content: center;
+}
+.photo-label::before, .photo-label::after {
+  content: ''; flex: 1; max-width: 60px;
+  height: 1px; background: rgba(200,160,255,0.25);
+}
+.photo-img {
+  width: 100%;
+  max-width: 420px;
+  max-height: 380px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(244,143,177,0.25);
+  box-shadow: 0 0 40px rgba(244,143,177,0.18), 0 0 80px rgba(139,47,201,0.12);
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.photo-img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 60px rgba(244,143,177,0.32), 0 0 100px rgba(139,47,201,0.2);
+}
+.photo-caption {
+  margin-top: 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text-soft);
+  letter-spacing: 0.03em;
+}
+
+/* ─── MUSIC PLAYER ─── */
+.music-player {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  display: none;
+}
+.music-btn {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c2185b, #8b2fc9);
+  border: 1px solid rgba(244,143,177,0.35);
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 24px rgba(194,24,91,0.45), 0 0 48px rgba(139,47,201,0.25);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: pulse 3s ease-in-out infinite;
+  position: relative;
+}
+.music-btn:hover { transform: scale(1.1); box-shadow: 0 0 36px rgba(194,24,91,0.65); }
+.music-btn:active { transform: scale(0.95); }
+
+.music-tooltip {
+  position: absolute;
+  bottom: 64px; right: 0;
+  background: rgba(8,4,30,0.92);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 0.6rem 1rem;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  white-space: nowrap;
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s, transform 0.25s;
+}
+.music-player:hover .music-tooltip { opacity: 1; transform: translateY(0); }
+
+.music-wave {
+  display: flex; align-items: center; gap: 3px;
+  position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+}
+.music-wave span {
+  display: block; width: 3px; border-radius: 2px;
+  background: rgba(255,255,255,0.7);
+  animation: wave 1s ease-in-out infinite;
+}
+.music-wave span:nth-child(1) { height: 6px; animation-delay: 0s; }
+.music-wave span:nth-child(2) { height: 10px; animation-delay: 0.15s; }
+.music-wave span:nth-child(3) { height: 7px; animation-delay: 0.3s; }
+@keyframes wave {
+  0%,100% { transform: scaleY(0.5); opacity: 0.5; }
+  50%      { transform: scaleY(1.4); opacity: 1; }
+}
+.music-wave.paused span { animation-play-state: paused; }
+
+/* ─── PETALS FALL ─── */
+.petal-fall {
+  position: fixed;
+  top: -40px;
+  font-size: 1.3rem;
+  z-index: 999;
+  pointer-events: none;
+  animation: petalFall linear forwards;
+}
+@keyframes petalFall {
+  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 520px) {
+  .login-card { padding: 2rem 1.4rem; }
+  .letter-card { padding: 2rem 1.4rem; }
+  .flowers-grid { gap: 0.9rem; }
+  .flower-card { min-width: 150px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="galaxy-canvas"></canvas>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div class="page" id="login-page">
+  <div class="login-card">
+    <div class="login-emblem">🌸</div>
+    <h1 class="login-title">Para ti, Amor</h1>
+    <p class="login-subtitle">Solo alguien especial puede entrar</p>
+
+    <div class="divider">✦ acceso privado ✦</div>
+
+    <div class="field-wrap">
+      <label class="field-label" for="user-input">Usuario</label>
+      <input class="field-input" id="user-input" type="text" placeholder="Tu nombre..." autocomplete="off" spellcheck="false"/>
+    </div>
+
+    <div class="field-wrap">
+      <label class="field-label" for="date-input">Nuestra fecha especial</label>
+      <input class="field-input" id="date-input" type="text" placeholder="dd/mm/aaaa" maxlength="10" autocomplete="off"/>
+    </div>
+
+    <button class="login-btn" onclick="tryLogin()">✦ &nbsp;Entrar &nbsp;✦</button>
+    <p class="error-msg" id="error-msg"></p>
+  </div>
+</div>
+
+<!-- ══════════ SORPRESA ══════════ -->
+<div class="page" id="surprise-page">
+
+  <div class="surprise-header">
+    <p class="surprise-eyebrow">✦ &nbsp; solo para ti &nbsp; ✦</p>
+    <h2 class="surprise-title">Para ti Amor,<br>con todo mi corazón</h2>
+    <p class="surprise-sub">Estas flores son tan únicas como tú</p>
+  </div>
+
+  <div class="flowers-grid">
+
+    <!-- Margarita -->
+    <div class="flower-card">
+      <svg class="flower-stage" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+        <g id="margarita" style="transform-origin:60px 155px; transform:scaleY(0)">
+          <!-- tallo -->
+          <line x1="60" y1="155" x2="60" y2="95" stroke="#4caf81" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M60 135 Q46 128 43 118" fill="none" stroke="#4caf81" stroke-width="2.5" stroke-linecap="round"/>
+          <ellipse cx="38" cy="115" rx="12" ry="6.5" fill="#66bb6a" transform="rotate(-28 38 115)"/>
+          <!-- pétalos -->
+          <g transform="translate(60,66)">
+            <ellipse cx="0" cy="-29" rx="7.5" ry="17" fill="#fff" stroke="#e0dde8" stroke-width="0.8" opacity="0.95"/>
+            <ellipse cx="0" cy="-29" rx="7.5" ry="17" fill="#fff" stroke="#e0dde8" stroke-width="0.8" opacity="0.95" transform="rotate(45)"/>
+            <ellipse cx="0" cy="-29" rx="7.5" ry="17" fill="#fff" stroke="#e0dde8" stroke-width="0.8" opacity="0.95" transform="rotate(90)"/>
+            <ellipse cx="0" cy="-29" rx="7.5" ry="17" fill="#fff" stroke="#e0dde8" stroke-width="0.8" opacity="0.95" transform="rotate(135)"/>
+            <ellipse cx="0" cy="-29" rx="7.5" ry="17" fill="#fff" stroke="#e0dde8" stroke-width="0.8" opacity="0.95" transform="rotate(180)"/>
+            <ellipse cx="0" cy="-29" rx="7.5" ry="17" fill="#fff" stroke="#e0dde8" stroke-width="0.8" opacity="0.95" transform="rotate(225)"/>
+            <ellipse cx="0" cy="-29" rx="7.5" ry="17" fill="#fff" stroke="#e0dde8" stroke-width="0.8" opacity="0.95" transform="rotate(270)"/>
+            <ellipse cx="0" cy="-29" rx="7.5" ry="17" fill="#fff" stroke="#e0dde8" stroke-width="0.8" opacity="0.95" transform="rotate(315)"/>
+            <!-- centro -->
+            <circle cx="0" cy="0" r="14" fill="#f9c22e"/>
+            <circle cx="0" cy="0" r="11" fill="#f5a623"/>
+            <circle cx="-3.5" cy="-3.5" r="2" fill="#c97a10"/>
+            <circle cx="3.5" cy="-3.5" r="2" fill="#c97a10"/>
+            <circle cx="0" cy="4" r="2" fill="#c97a10"/>
+            <circle cx="-4" cy="2" r="1.4" fill="#e08c15"/>
+            <circle cx="4" cy="2" r="1.4" fill="#e08c15"/>
+          </g>
+        </g>
+      </svg>
+      <p class="flower-name">Margarita</p>
+      <p class="flower-meaning">Inocencia y amor verdadero</p>
+    </div>
+
+    <!-- Tulipán -->
+    <div class="flower-card">
+      <svg class="flower-stage" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+        <g id="tulipan" style="transform-origin:60px 155px; transform:scaleY(0)">
+          <!-- tallo -->
+          <path d="M60 155 Q57 120 60 85" fill="none" stroke="#4caf81" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M60 130 Q45 122 41 110" fill="none" stroke="#4caf81" stroke-width="2.5" stroke-linecap="round"/>
+          <ellipse cx="36" cy="107" rx="13" ry="6.5" fill="#66bb6a" transform="rotate(-22 36 107)"/>
+          <path d="M60 118 Q75 110 79 99" fill="none" stroke="#4caf81" stroke-width="2" stroke-linecap="round"/>
+          <ellipse cx="83" cy="96" rx="10" ry="5.5" fill="#66bb6a" transform="rotate(18 83 96)"/>
+          <!-- corola tulipán -->
+          <path d="M60 84 Q44 73 44 54 Q44 36 60 28 Q76 36 76 54 Q76 73 60 84Z" fill="#e91e8c"/>
+          <!-- pétalos laterales exteriores -->
+          <path d="M55 82 Q38 75 36 55 Q36 38 48 34" fill="#f06292" opacity="0.82"/>
+          <path d="M65 82 Q82 75 84 55 Q84 38 72 34" fill="#f06292" opacity="0.82"/>
+          <!-- venas internas -->
+          <path d="M57 32 Q55 48 57 60" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M63 32 Q65 48 63 60" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-linecap="round"/>
+          <!-- brillo -->
+          <ellipse cx="52" cy="44" rx="4" ry="8" fill="rgba(255,255,255,0.18)" transform="rotate(-10 52 44)"/>
+        </g>
+      </svg>
+      <p class="flower-name">Tulipán</p>
+      <p class="flower-meaning">Amor perfecto e irrepetible</p>
+    </div>
+
+    <!-- Loto -->
+    <div class="flower-card">
+      <svg class="flower-stage" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+        <g id="loto" style="transform-origin:60px 155px; transform:scaleY(0)">
+          <!-- agua reflejo -->
+          <ellipse cx="60" cy="148" rx="50" ry="10" fill="#1a237e" opacity="0.45"/>
+          <path d="M10 148 Q60 142 110 148" fill="none" stroke="#5c6bc0" stroke-width="1.2" opacity="0.6"/>
+          <!-- tallo -->
+          <line x1="60" y1="148" x2="60" y2="108" stroke="#4caf81" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- hojas acuáticas -->
+          <ellipse cx="32" cy="134" rx="24" ry="11" fill="#388e3c" opacity="0.8" transform="rotate(-15 32 134)"/>
+          <path d="M32 134 Q32 128 38 128" fill="none" stroke="#2e7d32" stroke-width="1" opacity="0.6"/>
+          <ellipse cx="88" cy="134" rx="24" ry="11" fill="#388e3c" opacity="0.8" transform="rotate(15 88 134)"/>
+          <!-- pétalos externos loto -->
+          <path d="M60 108 Q40 104 38 86 Q38 68 56 64" fill="#f48fb1" opacity="0.75"/>
+          <path d="M60 108 Q80 104 82 86 Q82 68 64 64" fill="#f48fb1" opacity="0.75"/>
+          <!-- pétalos medios -->
+          <path d="M60 106 Q42 100 42 82 Q42 64 60 58 Q78 64 78 82 Q78 100 60 106Z" fill="#e91e8c" opacity="0.9"/>
+          <!-- pétalos internos -->
+          <path d="M60 102 Q49 94 50 78 Q54 63 60 60" fill="#f8bbd0" opacity="0.95"/>
+          <path d="M60 102 Q71 94 70 78 Q66 63 60 60" fill="#f8bbd0" opacity="0.95"/>
+          <!-- pétalo central -->
+          <path d="M60 98 Q57 84 60 68 Q63 84 60 98Z" fill="white" opacity="0.55"/>
+          <!-- estambre centro -->
+          <circle cx="60" cy="80" r="11" fill="#f9c22e"/>
+          <circle cx="60" cy="80" r="8" fill="#f5a623"/>
+          <circle cx="60" cy="80" r="4.5" fill="#bf8a1a"/>
+          <!-- puntitos estambre -->
+          <circle cx="56" cy="77" r="1.5" fill="#fff59d" opacity="0.8"/>
+          <circle cx="64" cy="77" r="1.5" fill="#fff59d" opacity="0.8"/>
+          <circle cx="60" cy="85" r="1.5" fill="#fff59d" opacity="0.8"/>
+        </g>
+      </svg>
+      <p class="flower-name">Loto</p>
+      <p class="flower-meaning">Pureza y nuevos comienzos juntos</p>
+    </div>
+
+  </div>
+
+  <!-- FOTO -->
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <p class="photo-label">✦ nosotros ✦</p>
+      <img class="photo-img" src="amor.jpeg" alt="Nuestra foto especial" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+      <div style="display:none;padding:2rem;color:var(--text-soft);font-style:italic;font-size:0.9rem;">
+        📷 Coloca <strong style="color:var(--gold-light)">amor.jpg</strong> en la misma carpeta que este archivo
+      </div>
+      <p class="photo-caption">Cada momento contigo es mi lugar favorito en el universo</p>
+    </div>
+  </div>
+
+  <!-- CARTA -->
+
+  <div class="letter-wrap">
+    <div class="letter-card">
+      <div class="letter-top-deco">
+        <div class="letter-top-deco-line"></div>
+        <span class="letter-deco-icon">✦ 💌 ✦</span>
+        <div class="letter-top-deco-line right"></div>
+      </div>
+
+      <p class="letter-greeting">Guadalupe, amor mío,</p>
+      <div class="letter-body">
+        <p><strong>Quiero pedirte perdón de corazón</strong> por lo que te dije. Fue un malentendido.</p>
+
+<p><strong>Nunca sería mi intención hacerte sentir así.</strong></p>
+<p><strong>Reconozco que me expresé mal.</strong> A veces me cuesta poner en palabras lo que mi corazón siente. Me duele mucho saber que mis palabras te causaron tristeza o confusión.</p>
+<p>No te pido que olvides. Solo te pido que me des la <strong>oportunidad de demostrarte con acciones</strong>, día a día, lo importante que eres para mí y lo mucho que te valoro.</p>
+
+<p><strong>Quiero agradecerte por cada momento que hemos vivido juntos.</strong> Gracias por tu risa que alegra mis días, por tu paciencia cuando me equivoco, por tu abrazo que me calma, y por <strong>enseñarme lo que es amar de verdad</strong>. Cada día a tu lado me hace ser mejor persona y me recuerda lo afortunado que soy de tenerte.</p>
+
+
+<p>Quiero que conozcas a mi familia porque <strong>sueño con que seas parte de mi vida</strong>, de la forma correcta, con respeto, admiración y amor.</p>
+
+<p><strong>Perdóname, amor.</strong> Te lo pido con toda mi sinceridad.</p>
+      </div>
+      <p class="letter-signature">Con todo mi amor, siempre tuyo 🌸</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- MÚSICA -->
+<audio id="bgMusic" loop>
+  <source src="amor.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music-player" id="musicPlayer">
+  <div class="music-tooltip">Love Story 🎵</div>
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Música">
+    <span id="musicIcon">♪</span>
+    <div class="music-wave paused" id="musicWave">
+      <span></span><span></span><span></span>
+    </div>
+  </button>
+</div>
+<script>
+
+
+/* ══════════ GALAXY CANVAS ══════════ */
+(function(){
+  const canvas = document.getElementById('galaxy-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [], nebulas = [];
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initStars(){
+    stars = [];
+    for(let i=0;i<320;i++){
+      stars.push({
+        x: Math.random()*W, y: Math.random()*H,
+        r: Math.random()*1.6+0.2,
+        a: Math.random(), da: (Math.random()*0.004+0.001)*(Math.random()<0.5?1:-1),
+        color: ['#ffffff','#ffe4f5','#d4c5ff','#b3d9ff'][Math.floor(Math.random()*4)]
+      });
+    }
+    nebulas = [
+      {x:W*0.2, y:H*0.3, rx:W*0.32, ry:H*0.28, c:'#8b2fc9', a:0.07},
+      {x:W*0.75, y:H*0.6, rx:W*0.28, ry:H*0.25, c:'#880e4f', a:0.06},
+      {x:W*0.5, y:H*0.1, rx:W*0.22, ry:H*0.18, c:'#1a237e', a:0.08},
+      {x:W*0.85, y:H*0.15, rx:W*0.18, ry:H*0.16, c:'#c2185b', a:0.05},
+    ];
+  }
+
+  function drawNebula(n){
+    const grad = ctx.createRadialGradient(n.x,n.y,0, n.x,n.y, Math.max(n.rx,n.ry));
+    grad.addColorStop(0, n.c+'30');
+    grad.addColorStop(0.5, n.c+'12');
+    grad.addColorStop(1, 'transparent');
+    ctx.save();
+    ctx.scale(n.rx/Math.max(n.rx,n.ry), n.ry/Math.max(n.rx,n.ry));
+    const ratio = Math.max(n.rx,n.ry);
+    ctx.beginPath();
+    ctx.arc(n.x*(Math.max(n.rx,n.ry)/n.rx), n.y*(Math.max(n.rx,n.ry)/n.ry), ratio, 0, Math.PI*2);
+    ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = 1;
+    const g2 = ctx.createRadialGradient(n.x,n.y,0, n.x,n.y, Math.max(n.rx,n.ry)*0.9);
+    g2.addColorStop(0, n.c+'28');
+    g2.addColorStop(0.6, n.c+'0a');
+    g2.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.ellipse(n.x, n.y, n.rx, n.ry, 0, 0, Math.PI*2);
+    ctx.fillStyle = g2;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    /* deep space bg */
+    const bg = ctx.createRadialGradient(W/2,H/2,0, W/2,H/2,Math.max(W,H)*0.75);
+    bg.addColorStop(0,'#0d0820'); bg.addColorStop(0.5,'#07041a'); bg.addColorStop(1,'#04020f');
+    ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+    /* nebulas */
+    nebulas.forEach(drawNebula);
+    /* stars */
+    stars.forEach(s=>{
+      s.a += s.da;
+      if(s.a>1||s.a<0.1) s.da*=-1;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = s.color;
+      ctx.globalAlpha = s.a;
+      ctx.fill();
+      if(s.r>1.1){
+        ctx.globalAlpha = s.a*0.4;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r*2.5, 0, Math.PI*2);
+        ctx.fillStyle = s.color;
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize(); initStars(); draw();
+  window.addEventListener('resize', ()=>{ resize(); initStars(); });
+})();
+
+/* ══════════ DATE FORMAT ══════════ */
+document.getElementById('date-input').addEventListener('input', function(e){
+  let v = e.target.value.replace(/\D/g,'');
+  if(v.length>2) v = v.slice(0,2)+'/'+v.slice(2);
+  if(v.length>5) v = v.slice(0,5)+'/'+v.slice(5);
+  if(v.length>10) v = v.slice(0,10);
+  e.target.value = v;
+});
+document.getElementById('date-input').addEventListener('keypress', e=>{ if(e.key==='Enter') tryLogin(); });
+document.getElementById('user-input').addEventListener('keypress', e=>{ if(e.key==='Enter') document.getElementById('date-input').focus(); });
+
+/* ══════════ LOGIN ══════════ */
+function tryLogin(){
+  const user = document.getElementById('user-input').value.trim().toLowerCase();
+  const date = document.getElementById('date-input').value.trim();
+  const err  = document.getElementById('error-msg');
+
+  if(user==='guadalupe' && date==='04/06/2026'){
+    document.getElementById('login-page').style.display  = 'none';
+    document.getElementById('surprise-page').style.display = 'flex';
+    document.getElementById('musicPlayer').style.display = 'block';
+    setTimeout(growFlowers, 400);
+    setTimeout(launchPetals, 900);
+    setTimeout(startMusic, 600);
+  } else if(!user||!date){
+    err.textContent = '✦ Por favor llena los dos campos ✦';
+  } else {
+    err.textContent = '✦ Hmm… ¿lo recuerdas bien? Inténtalo de nuevo 💕';
+    const di = document.getElementById('date-input');
+    di.style.borderColor='rgba(244,143,177,0.8)';
+    di.style.boxShadow='0 0 0 3px rgba(244,143,177,0.18)';
+    setTimeout(()=>{ di.style.borderColor=''; di.style.boxShadow=''; err.textContent=''; }, 2400);
+  }
+}
+
+/* ══════════ GROW FLOWERS ══════════ */
+function growFlowers(){
+  const ids = ['margarita','tulipan','loto'];
+  const delays = [0, 220, 440];
+  ids.forEach((id, i)=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    setTimeout(()=>{
+      el.style.transition = 'transform 1.4s cubic-bezier(0.16,1,0.3,1)';
+      el.style.transform  = 'scaleY(1)';
+    }, delays[i]);
+  });
+}
+
+/* ══════════ PETALS ══════════ */
+function launchPetals(){
+  const p = ['🌸','🌺','🌼','💮','🌷','✨','💫'];
+  for(let i=0;i<20;i++){
+    setTimeout(()=>{
+      const el = document.createElement('div');
+      el.className = 'petal-fall';
+      const dur = 3.5 + Math.random()*3;
+      el.style.cssText = `left:${Math.random()*100}%;font-size:${1+Math.random()*0.8}rem;animation-duration:${dur}s;`;
+      el.textContent = p[Math.floor(Math.random()*p.length)];
+      document.body.appendChild(el);
+      el.addEventListener('animationend', ()=> el.remove());
+    }, i * 140);
+  }
+}
+/* ══════════ MUSIC ══════════ */
+let playing = false;
+
+function startMusic(){
+  const audio = document.getElementById('bgMusic');
+  audio.volume = 0;
+  audio.play().then(()=>{
+    playing = true;
+    updateMusicUI();
+    let v = 0;
+    const fade = setInterval(()=>{
+      v = Math.min(v + 0.04, 0.75);
+      audio.volume = v;
+      if(v >= 0.75) clearInterval(fade);
+    }, 100);
+  }).catch(()=>{});
+}
+
+function toggleMusic(){
+  const audio = document.getElementById('bgMusic');
+  if(playing){
+    audio.pause();
+    playing = false;
+  } else {
+    audio.play().catch(()=>{});
+    playing = true;
+  }
+  updateMusicUI();
+}
+
+function updateMusicUI(){
+  document.getElementById('musicIcon').textContent = playing ? '♫' : '♪';
+  const wave = document.getElementById('musicWave');
+  wave.classList.toggle('paused', !playing);
+}
+</script>
+</body>
+</html>
